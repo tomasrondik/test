@@ -36,14 +36,14 @@ public class ItemControllerTest {
     @Test
     void getItem_Happy_Success() throws Exception {
 
-        final var createdItemJson = mockMvc.perform(MockMvcRequestBuilders.get("/store/uuid1/item/uuid2"))
+        final String createdItemJson = mockMvc.perform(MockMvcRequestBuilders.get("/store/uuid1/item/uuid2"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        final var createdItem = objectMapper.readValue(createdItemJson, Item.class);
+        final Item createdItem = objectMapper.readValue(createdItemJson, Item.class);
         assertEquals("uuid2", createdItem.getId());
         assertEquals("uuid1", createdItem.getStoreId());
         assertEquals("Flat white", createdItem.getName());
@@ -53,13 +53,13 @@ public class ItemControllerTest {
 
     @Test
     public void createItem_Happy_Success() throws Exception {
-        final var item = CreateItem.builder()
+        final CreateItem item = CreateItem.builder()
                 .name("Gingerbread latte")
                 .description("The best winter season coffee ever")
                 .price(BigDecimal.valueOf(7.50))
                 .build();
 
-        final var createdStoreJson = mockMvc.perform(MockMvcRequestBuilders.post("/store/uuid1/item")
+        final String createdStoreJson = mockMvc.perform(MockMvcRequestBuilders.post("/store/uuid1/item")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(item)))
                 .andExpect(status().isOk())
@@ -67,7 +67,7 @@ public class ItemControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        final var createdItem = objectMapper.readValue(createdStoreJson, Item.class);
+        final Item createdItem = objectMapper.readValue(createdStoreJson, Item.class);
         assertNotNull(createdItem.getId());
         assertEquals("uuid1", createdItem.getStoreId());
         assertEquals("Gingerbread latte", createdItem.getName());

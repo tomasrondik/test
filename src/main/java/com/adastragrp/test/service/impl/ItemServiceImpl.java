@@ -1,6 +1,7 @@
 package com.adastragrp.test.service.impl;
 
 import com.adastragrp.test.database.entity.ItemEntity;
+import com.adastragrp.test.database.entity.StoreEntity;
 import com.adastragrp.test.database.repository.ItemRepository;
 import com.adastragrp.test.database.repository.StoreRepository;
 import com.adastragrp.test.dto.CreateItem;
@@ -24,8 +25,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item createItem(CreateItem item, String storeId) {
-        final var store = storeRepository.getOne(storeId);
-        var entity = dtoToEntity(item);
+        final StoreEntity store = storeRepository.getOne(storeId);
+        ItemEntity entity = dtoToEntity(item);
         entity.setStore(store);
 
         entity = repository.save(entity);
@@ -35,7 +36,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item getItem(String id, String storeId) {
-        final var entity = repository.getByIdAndStoreId(id, storeId);
+        final ItemEntity entity = repository.getByIdAndStoreId(id, storeId);
         return entityToDto(entity);
     }
 

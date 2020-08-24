@@ -21,7 +21,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Store create(CreateStore store) {
-        var entity = dtoToEntity(store);
+        StoreEntity entity = dtoToEntity(store);
         entity = repository.save(entity);
 
         return entityToDto(entity);
@@ -29,7 +29,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Store getStore(String id) {
-        final var entity = repository.getOne(id);
+        final StoreEntity entity = repository.getOne(id);
         return entityToDto(entity);
     }
 
@@ -44,7 +44,6 @@ public class StoreServiceImpl implements StoreService {
     }
 
     private static final StoreEntity dtoToEntity(CreateStore dto) {
-        // TODO create null pointer situation by adding Address
         return StoreEntity.builder()
                 .name(dto.getName())
                 .phoneNumber(dto.getPhoneNumber())

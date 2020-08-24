@@ -31,14 +31,14 @@ class StoreControllerTest {
 	@Test
 	void getStore_Happy_Success() throws Exception {
 
-		final var createdStoreJson = mockMvc.perform(MockMvcRequestBuilders.get("/store/uuid1"))
+		final String createdStoreJson = mockMvc.perform(MockMvcRequestBuilders.get("/store/uuid1"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andReturn()
 				.getResponse()
 				.getContentAsString();
 
-		final var createdStore = objectMapper.readValue(createdStoreJson, Store.class);
+		final Store createdStore = objectMapper.readValue(createdStoreJson, Store.class);
 		assertEquals("uuid1", createdStore.getId());
 		assertEquals("Starbucks", createdStore.getName());
 		assertEquals("+100100200", createdStore.getPhoneNumber());
@@ -48,13 +48,13 @@ class StoreControllerTest {
 
 	@Test
 	void createStore_Happy_Success() throws Exception {
-		final var store = CreateStore.builder()
+		final CreateStore store = CreateStore.builder()
 				.name("7-Eleven")
 				.phoneNumber("+1234567891")
 				.category(StoreCategory.GROCERY_STORE)
 				.build();
 
-		final var createdStoreJson = mockMvc.perform(MockMvcRequestBuilders.post("/store")
+		final String createdStoreJson = mockMvc.perform(MockMvcRequestBuilders.post("/store")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(store)))
 				.andExpect(status().isOk())
@@ -62,7 +62,7 @@ class StoreControllerTest {
 				.getResponse()
 				.getContentAsString();
 
-		final var createdStore = objectMapper.readValue(createdStoreJson, Store.class);
+		final Store createdStore = objectMapper.readValue(createdStoreJson, Store.class);
 		assertNotNull(createdStore.getId());
 		assertEquals("7-Eleven", createdStore.getName());
 		assertEquals("+1234567891", createdStore.getPhoneNumber());
